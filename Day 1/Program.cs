@@ -1,59 +1,5 @@
 ﻿using Lab1;
 
-// 1. Ask the user for a publisher name & sorting method (sorting criteria (by Title, price, etc….) and
-// sorting way (ASC. Or DESC.))…. And implement a function named FindBooksSorted() that displays all books written
-// by this Author sorted as the user requested.
-// Try this: FunBooks
-Console.Write("Enter Publisher name: ");
-string publisherName = Console.ReadLine();
-
-Console.Write("Enter Sorting Criteria (title / price / subject): ");
-string sortingCriteria = Console.ReadLine();
-
-Console.Write("Enter Sorting method (Asc / Desc): ");
-string sortingMethod = Console.ReadLine();
-
-GetBooksSorted(publisherName, sortingCriteria, sortingMethod);
-
-List<Book> GetBooksSorted(string publisher, string sortBy, string sortMethod)
-{
-    var booksQuery = SampleData.Books
-        .Where(b => b.Publisher.Name == publisher);
-
-    if (sortingMethod == "asc")
-    {
-        switch (sortBy)
-        {
-            case "title":
-                booksQuery.OrderBy(b => b.Title);
-                break;
-            case "price":
-                booksQuery.OrderBy(b => b.Price);
-                break;
-            case "subject":
-                booksQuery.OrderBy(b => b.Subject.Name);
-                break;
-        }
-    }
-    else if (sortingMethod == "desc")
-    {
-        switch (sortBy)
-        {
-            case "title":
-                booksQuery.OrderByDescending(b => b.Title);
-                break;
-            case "price":
-                booksQuery.OrderByDescending(b => b.Price);
-                break;
-            case "subject":
-                booksQuery.OrderByDescending(b => b.Subject.Name);
-                break;
-        }
-    }
-
-    return booksQuery.ToList();
-}
-
 // 1. Display book title and its ISBN.
 var problem1 = SampleData.Books.Select(b => new { b.Title, b.Isbn }).ToList();
 
@@ -133,4 +79,59 @@ var problem8 = SampleData.Books.GroupBy(b => new { b.Publisher, b.Subject }).ToL
 foreach (var item in problem8)
 {
     Console.WriteLine($"{item.Key.Subject} - {item.Key.Publisher.Name}");
+}
+
+// Bonus
+// 1. Ask the user for a publisher name & sorting method (sorting criteria (by Title, price, etc….) and
+// sorting way (ASC. Or DESC.))…. And implement a function named FindBooksSorted() that displays all books written
+// by this Author sorted as the user requested.
+// Try this: Joe Publishing
+Console.Write("Enter Publisher name: ");
+string publisherName = Console.ReadLine();
+
+Console.Write("Enter Sorting Criteria (title / price / subject): ");
+string sortingCriteria = Console.ReadLine();
+
+Console.Write("Enter Sorting method (Asc / Desc): ");
+string sortingMethod = Console.ReadLine();
+
+GetBooksSorted(publisherName, sortingCriteria, sortingMethod);
+
+List<Book> GetBooksSorted(string publisher, string sortBy, string sortMethod)
+{
+    var booksQuery = SampleData.Books
+        .Where(b => b.Publisher.Name == publisher);
+
+    if (sortingMethod == "asc")
+    {
+        switch (sortBy)
+        {
+            case "title":
+                booksQuery = booksQuery.OrderBy(b => b.Title);
+                break;
+            case "price":
+                booksQuery = booksQuery.OrderBy(b => b.Price);
+                break;
+            case "subject":
+                booksQuery = booksQuery.OrderBy(b => b.Subject.Name);
+                break;
+        }
+    }
+    else if (sortingMethod == "desc")
+    {
+        switch (sortBy)
+        {
+            case "title":
+                booksQuery = booksQuery.OrderByDescending(b => b.Title);
+                break;
+            case "price":
+                booksQuery = booksQuery.OrderByDescending(b => b.Price);
+                break;
+            case "subject":
+                booksQuery = booksQuery.OrderByDescending(b => b.Subject.Name);
+                break;
+        }
+    }
+
+    return booksQuery.ToList();
 }
